@@ -110,7 +110,7 @@ distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang 
 
 1. Handling Missing Values
    
-     ![isnull]https://github.com/fidelsyaa/ML/blob/main/isnull.png)
+     ![isnull](https://github.com/fidelsyaa/ML/blob/main/isnull.png)
    
    Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
 
@@ -166,12 +166,14 @@ Semua model dibangun dengan menggunakan Scikit-learn, dan preprocessing dilakuka
 - Tahapan Modeling & Parameter:
 1. Logistic Regression
 Model ini menggunakan fungsi logistik (sigmoid) untuk mengestimasi probabilitas bahwa suatu data termasuk dalam kelas 1. Logistic Regression bekerja dengan mengoptimalkan fungsi log-loss untuk memisahkan dua kelas.
+
 ⚙️ Parameter:
 - penalty: 'l2' (default) → regularisasi Ridge
 - C: 1.0 (default) → kekuatan regularisasi
 - solver: 'lbfgs' (default)
 3. Random Forest (Default)
    Random Forest adalah ensemble dari banyak pohon keputusan (Decision Tree). Setiap pohon dilatih pada subset acak dari data (bootstrap sampling), dan fitur yang digunakan juga dipilih secara acak. Hasil prediksi diambil berdasarkan mayoritas voting dari semua pohon. Model ensemble berbasis pohon keputusan. Menghasilkan prediksi berdasarkan voting dari banyak pohon. dan digunakan Parameter default. digunakan parameter random_state=42.
+  
 ⚙️ Parameter:
 - n_estimators: 100 (default) → jumlah pohon
 - criterion: 'gini' (default)
@@ -179,6 +181,7 @@ Model ini menggunakan fungsi logistik (sigmoid) untuk mengestimasi probabilitas 
 - random_state: 42
 4. Support Vector Machine (SVM)
 SVM mencoba mencari hyperplane terbaik yang memisahkan dua kelas dengan margin terbesar. Untuk data non-linear, SVM menggunakan kernel trick untuk memetakan data ke dimensi yang lebih tinggi.
+
 ⚙️ Parameter:
 - kernel: 'rbf' (default)
 - C: 1.0 (default) → trade-off antara margin dan error
@@ -227,15 +230,16 @@ Model ini memberikan keseimbangan terbaik antara false positive dan false negati
 
 - Feature Importance
 Dari hasil Permutation Feature Importance terhadap model KNN Tuned, fitur paling penting dalam prediksi adalah:
-- Glucose
-- BMI
-- Age Bins
-- Skin Thickness
-- BMI-Glucose Ratio
+  1. Glucose
+  2. BMI
+  3. Age Bins
+  4. Skin Thickness
+  5. BMI-Glucose Ratio
 
 ## Evaluation
 Pada tahap evaluasi, kita menggunakan beberapa metrik klasifikasi untuk mengukur kinerja model dalam memprediksi diabetes pada wanita suku Pima. Metrik yang digunakan meliputi Accuracy, Precision, Recall, F1-Score, dan ROC-AUC. Setiap metrik ini memberikan pandangan yang berbeda tentang performa model, khususnya dalam konteks deteksi dini diabetes, yang sangat penting untuk diagnosis yang cepat dan efektif.
 1. Accuracy
+   
 Metrik ini memberikan gambaran umum tentang performa model, tetapi bisa menyesatkan jika dataset tidak seimbang (misalnya, banyak kasus negatif). Pada kasus deteksi diabetes, meskipun model memiliki accuracy tinggi, bisa saja model tersebut lebih sering memprediksi "non-diabetes" dan gagal mendeteksi sebagian besar kasus diabetes.
 
 TP+TN / TP+TN+FP+FN
@@ -246,19 +250,23 @@ TP+TN / TP+TN+FP+FN
 - FN = False Negatives (kasus positif yang salah terdeteksi sebagai negatif)
   
 2. Precision
+   
 Precision mengukur akurasi dari prediksi positif. Dengan kata lain, seberapa banyak dari prediksi yang positif benar-benar benar. Precision tinggi berarti model jarang membuat prediksi positif yang salah (false positives). Dalam konteks prediksi diabetes, precision yang tinggi penting karena bisa meminimalkan jumlah pasien yang salah diberi diagnosis diabetes (false positives).
 
  TP / (TP + FP)
 
 4. Recall
+   
 Recall mengukur seberapa banyak kasus positif yang sebenarnya berhasil terdeteksi oleh model. Recall tinggi berarti model mampu mendeteksi sebagian besar kasus positif, yang dalam hal ini adalah pasien yang benar-benar mengidap diabetes. Recall yang tinggi sangat penting dalam konteks kesehatan karena dapat mengurangi jumlah pasien yang tidak terdeteksi (false negatives), yang dapat berisiko mengalami komplikasi serius jika tidak segera ditangani.
 
 TP / (TP + FN)
 
 6. F1-score
+   
    F1-Score adalah rata-rata harmonik antara precision dan recall, yang memberikan keseimbangan antara keduanya. F1-Score sangat berguna ketika kita ingin menyeimbangkan antara precision dan recall. F1-Score memberikan gambaran yang lebih seimbang tentang performa model, terutama ketika precision dan recall memiliki peran yang sama penting. Dalam kasus prediksi diabetes, F1-Score yang tinggi mengindikasikan model berhasil mendeteksi pasien diabetes dengan sedikit kesalahan baik dalam hal false positives maupun false negatives.
    
 8. ROC-AUC
+   
   F1-Score memberikan gambaran yang lebih seimbang tentang performa model, terutama ketika precision dan recall memiliki peran yang sama penting. Dalam kasus prediksi diabetes, F1-Score yang tinggi mengindikasikan model berhasil mendeteksi pasien diabetes dengan sedikit kesalahan baik dalam hal false positives maupun false negatives.
 AUC tinggi menunjukkan bahwa model dapat memisahkan dengan baik antara penderita diabetes dan non-diabetes. Ini sangat penting dalam aplikasi medis, karena membantu mengidentifikasi individu berisiko yang membutuhkan perhatian medis lebih lanjut.
 
