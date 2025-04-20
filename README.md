@@ -37,7 +37,10 @@ Model-model ini dievaluasi menggunakan metrik klasifikasi seperti akurasi, preci
 ## Data Understanding
 
 Dataset ini berasal dari National Institute of Diabetes and Digestive and Kidney Diseases. Tujuan utama dari dataset ini adalah untuk memprediksi secara diagnostik apakah seorang pasien memiliki diabetes atau tidak, berdasarkan beberapa pengukuran diagnostik yang terdapat dalam dataset tersebut. Ada beberapa batasan yang diterapkan dalam pemilihan data dari database yang lebih besar. Secara khusus, semua pasien yang ada dalam dataset ini adalah perempuan dengan usia minimal 21 tahun dan memiliki keturunan Pima Indian. Dataset yang digunakan adalah Pima Indians Diabetes Database, tersedia di [UCI Machine Learning Repository](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database/data)
+
 ![variabel](https://github.com/fidelsyaa/ML/blob/main/variabel.png)
+
+Dari informasi dataset diatas, didapatkan sejumlah informasi dari dataset pima diabetes, yaitu:
 - Jumlah baris: 768
 - Jumlah kolom: 9 (8 fitur + 1 label Outcome)
 - Terdapat beberapa nilai nol pada kolom-kolom seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI, yang tidak logis secara medis dan oleh karena itu dianggap sebagai missing value.
@@ -53,7 +56,21 @@ Dataset ini berasal dari National Institute of Diabetes and Digestive and Kidney
 - Age: Usia (dalam tahun)
 - Outcome: Target variable (0 = non-diabetes, 1 = diabetes)
 
+![jenis](https://github.com/fidelsyaa/ML/blob/main/jenis.png)
+
 Dari eksplorasi data yang dilakukan menggunakan fungsi Melalui fungsi diabetes.info() diperoleh bahwa semua fitur bertipe numerik (int64 dan float64). Tidak ada nilai null secara eksplisit. Distribusi statistik dari dataset juga menujukkan bahwa fitur seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI memiliki nilai minimum 0, yang secara medis tidak logis (misalnya tekanan darah 0), dan akan ditindaklanjuti di tahap Data Preparation.
+
+![describe](https://github.com/fidelsyaa/ML/blob/main/describe.png)
+
+Berdasarkan gambar statistik deskriptif dari dataset Pima Indians Diabetes Database tersebut, terlihat bahwa setiap fitur memiliki jumlah data yang sama yaitu sebanyak 768 entri. Namun, beberapa fitur memiliki nilai minimum yang tidak logis secara medis dan perlu diperhatikan dalam tahap data cleaning.
+
+Fitur Glucose memiliki nilai minimum sebesar 0, yang secara medis tidak mungkin terjadi karena manusia tidak bisa hidup tanpa kadar glukosa dalam darah. Hal ini menunjukkan bahwa nilai nol tersebut kemungkinan merupakan representasi dari data yang hilang (missing value). Nilai rata-rata glukosa berada di 120.89, dengan nilai maksimum mencapai 199. Hal serupa juga terjadi pada fitur BloodPressure, yang memiliki nilai minimum 0, padahal tekanan darah tidak bisa nol, sehingga perlu dipertimbangkan sebagai data hilang.
+
+Fitur SkinThickness dan Insulin juga menunjukkan nilai minimum 0, yang tidak realistis dalam konteks medis, mengindikasikan adanya nilai hilang. Rata-rata insulin adalah 79.79 dengan standar deviasi cukup besar yaitu 115.24, serta nilai maksimum mencapai 846, yang menunjukkan kemungkinan adanya outlier. Fitur BMI pun memiliki nilai minimum 0, padahal nilai BMI tidak bisa nol, sehingga harus dianggap sebagai nilai yang tidak valid.
+
+Sementara itu, fitur DiabetesPedigreeFunction, Age, dan Outcome tidak memiliki nilai nol. Diabetes Pedigree Function memiliki rata-rata 0.47 dan maksimum 2.42, menunjukkan distribusi yang cenderung skewed. Usia pasien memiliki rentang antara 21 hingga 81 tahun, dengan rata-rata usia 33.24 tahun, mencerminkan bahwa dataset ini memang ditujukan untuk populasi dewasa. Terakhir, fitur Outcome memiliki nilai rata-rata sekitar 0.35, yang berarti sekitar 35% dari pasien dalam dataset ini terdiagnosis diabetes.
+
+Secara keseluruhan, terlihat bahwa banyak fitur yang mengandung nilai nol yang secara medis tidak masuk akal, sehingga perlu dilakukan proses penanganan missing values (seperti imputasi dengan median) sebelum masuk ke tahap pelatihan model.
 
 ## Data Preparation
 1. Feature Engineering
