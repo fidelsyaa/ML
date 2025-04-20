@@ -271,6 +271,7 @@ TP / (TP + FN)
 AUC tinggi menunjukkan bahwa model dapat memisahkan dengan baik antara penderita diabetes dan non-diabetes. Ini sangat penting dalam aplikasi medis, karena membantu mengidentifikasi individu berisiko yang membutuhkan perhatian medis lebih lanjut.
 
 Penjelasan Hasil Proyek Berdasarkan Metrik Evaluasi:
+
 ==== Logistic Regression ====
 Accuracy : 0.7903225806451613
 Precision: 0.7142857142857143
@@ -280,6 +281,7 @@ ROC AUC: 0.83
 Confusion Matrix:
  [[39  4]
  [ 9 10]]
+
 
 ==== Random Forest ====
 Accuracy : 0.7580645161290323
@@ -291,6 +293,7 @@ Confusion Matrix:
  [[35  8]
  [ 7 12]]
 
+
 ==== SVM ====
 Accuracy : 0.7903225806451613
 Precision: 0.7142857142857143
@@ -300,6 +303,7 @@ ROC AUC: 0.80
 Confusion Matrix:
  [[39  4]
  [ 9 10]]
+
 
 ==== KNN (Tuned) ====
 Accuracy : 0.8387096774193549
@@ -311,6 +315,7 @@ Confusion Matrix:
  [[41  2]
  [ 8 11]]
 
+
 ==== Random Forest (Tuned) ====
 Accuracy : 0.7580645161290323
 Precision: 0.6111111111111112
@@ -320,6 +325,7 @@ ROC AUC: 0.81
 Confusion Matrix:
  [[36  7]
  [ 8 11]]
+
  
  Analisis dan Interpretasi:
 - KNN (Tuned) memiliki performa terbaik:
