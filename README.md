@@ -72,6 +72,22 @@ Sementara itu, fitur DiabetesPedigreeFunction, Age, dan Outcome tidak memiliki n
 
 Secara keseluruhan, terlihat bahwa banyak fitur yang mengandung nilai nol yang secara medis tidak masuk akal, sehingga perlu dilakukan proses penanganan missing values (seperti imputasi dengan median) sebelum masuk ke tahap pelatihan model.
 
+Dilakukan juga korelsi antar fitur pada dataset menggunakan heatmap:
+
+![heatmap](https://github.com/fidelsyaa/ML/blob/main/heatmap.png)
+
+Berdasarkan heatmap korelasi di atas, terlihat bahwa variabel Outcome (indikator apakah seseorang mengidap diabetes atau tidak) memiliki korelasi positif paling kuat dengan Glucose sebesar 0.47. Ini menunjukkan bahwa semakin tinggi kadar glukosa seseorang, semakin besar kemungkinan orang tersebut terdeteksi diabetes. Hal ini sesuai dengan pemahaman medis bahwa kadar gula darah tinggi merupakan indikator utama diabetes.
+
+Selain Glucose, fitur BMI juga menunjukkan korelasi sedang dengan Outcome sebesar 0.29, diikuti oleh Age (0.24) dan Pregnancies (0.22). Artinya, indeks massa tubuh, usia, dan jumlah kehamilan (pada perempuan) juga turut berkontribusi dalam risiko diabetes, meskipun tidak sekuat glukosa.
+
+Sementara itu, fitur-fitur seperti BloodPressure, SkinThickness, Insulin, dan DiabetesPedigreeFunction memiliki korelasi yang lebih lemah terhadap Outcome, dengan nilai di bawah 0.2. Korelasi negatif maupun sangat kecil seperti ini menunjukkan bahwa keterkaitannya terhadap kemungkinan diabetes lebih rendah, meskipun bisa saja masih memiliki peran ketika digabungkan dengan fitur lainnya.
+
+Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup kuat dengan SkinThickness (0.44) dan Glucose (0.33), serta BMI (0.20). Korelasi ini dapat dijelaskan karena parameter-parameter tersebut sering kali saling berkaitan dalam kondisi metabolik tubuh.
+
+![distribusi](https://github.com/fidelsyaa/ML/blob/main/distribusi.png)
+
+distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang tidak menderita diabetes dibandingkan dengan yang menderita, sehingga perlu penanganan khusus dalam proses pemodelan agar model tidak bias.
+
 ## Data Preparation
 1. Feature Engineering
 2. Train-Test-Split
