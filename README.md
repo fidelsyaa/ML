@@ -88,12 +88,31 @@ Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup k
 
 distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang tidak menderita diabetes dibandingkan dengan yang menderita, sehingga perlu penanganan khusus dalam proses pemodelan agar model tidak bias.
 
-## Data Preparation
-1. Feature Engineering
-2. Train-Test-Split
-3. Standarisasi
+- Univariate Analysis
+1. Distribusi kelas target (Outcome) diperiksa dengan menggunakan sns.countplot().
+2. Visualisasi distribusi setiap fitur dilakukan dengan histogram dan boxplot untuk melihat potensi outlier dan distribusi yang skewed.
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
+![univariate](https://github.com/fidelsyaa/ML/blob/main/univariate.png)
+
+- Multivariate Analysis
+1. Korelasi antar fitur dan dengan target Outcome dihitung menggunakan matriks korelasi.
+2. Visualisasi hubungan antar fitur dilakukan menggunakan pairplot dan heatmap.
+3. Hasil menunjukkan bahwa Glucose memiliki korelasi paling signifikan dengan Outcome.
+
+![multi](https://github.com/fidelsyaa/ML/blob/main/multi.png)
+
+## Data Preparation
+1. Handling Missing Values
+2. Handling Outliers
+3. Feature Engineering
+4. Train-Test-Split
+5. Standarisasi
+
+1. Handling Missing Values:
+   - Nilai 0 pada kolom medis seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI dianggap sebagai missing values.
+   - Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
+2. Handling Outliers
+   - Mengidentifikasi dan menangani outliers menggunakan visualisasi boxplot. Jika diperlukan, outliers dapat dihapus atau distandarisasi.
 1. Feature Engineering:
 - BMI_Glucose_Ratio: Rasio antara BMI (Indeks Massa Tubuh) dan Glucose (Kadar glukosa darah).
 Tujuan: Menggabungkan dua fitur medis penting yang berpotensi memiliki hubungan kompleks terhadap risiko diabetes. Rasio ini dapat menangkap interaksi antara obesitas dan kadar glukosa yang mungkin menjadi indikator kuat untuk prediksi.
