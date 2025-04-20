@@ -108,12 +108,28 @@ distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang 
 4. Train-Test-Split
 5. Standarisasi
 
-1. Handling Missing Values:
-   - Nilai 0 pada kolom medis seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI dianggap sebagai missing values.
-   - Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
+1. Handling Missing Values
+   
+     ![isnull]https://github.com/fidelsyaa/ML/blob/main/isnull.png)
+   
+   Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
+
+Sebelum dilakukan imputasi dengan mengisi nilai nol menggunakan media, berikut adalah fitur yang memiliki angka 0:
+Jumlah nilai nol sebelum imputasi:
+Glucose: 5 nilai nol
+BloodPressure: 35 nilai nol
+SkinThickness: 227 nilai nol
+Insulin: 374 nilai nol
+BMI: 11 nilai nol
+    
 2. Handling Outliers
-   - Mengidentifikasi dan menangani outliers menggunakan visualisasi boxplot. Jika diperlukan, outliers dapat dihapus atau distandarisasi.
-1. Feature Engineering:
+   Mengidentifikasi dan menangani outliers menggunakan visualisasi boxplot. Jika diperlukan, outliers dapat dihapus atau distandarisasi. Outlier dideteksi menggunakan boxplot dan ditangani dengan metode IQR (Inter Quartile Range). Setiap nilai yang berada di luar [Q1 - 1.5IQR, Q3 + 1.5IQR] dianggap sebagai outlier dan ditangani sesuai strategi yang dipilih (misalnya diganti atau dihapus). Outlier perlu ditangani dalam proses analisis data dan pemodelan karena mereka dapat mempengaruhi hasil analisis dan akurasi model prediksi secara signifikan
+Jumlah data sebelum outlier removal: (768, 9)
+Jumlah data setelah outlier removal: (615, 9)
+
+Setelah outliers ditangani data yang awalnya ada 768, menjadi 615.
+
+3. Feature Engineering:
 - BMI_Glucose_Ratio: Rasio antara BMI (Indeks Massa Tubuh) dan Glucose (Kadar glukosa darah).
 Tujuan: Menggabungkan dua fitur medis penting yang berpotensi memiliki hubungan kompleks terhadap risiko diabetes. Rasio ini dapat menangkap interaksi antara obesitas dan kadar glukosa yang mungkin menjadi indikator kuat untuk prediksi.
 Manfaat: Memberikan fitur turunan yang bisa mengungkap hubungan non-linier antara BMI dan Glucose terhadap Outcome.
@@ -122,14 +138,14 @@ Manfaat: Memberikan fitur turunan yang bisa mengungkap hubungan non-linier antar
 Tujuan: Membantu model menangkap pola risiko berdasarkan kelompok usia. Fitur kategorikal ini dapat memperjelas tren yang tersembunyi jika hanya mengandalkan nilai numerik Age.
 Manfaat: Mempermudah interpretasi dan bisa meningkatkan kinerja model yang sensitif terhadap variabel kategori.
 
-2. Pemisahan Fitur dan Target
+4. Pemisahan Fitur dan Target
 Dataset yang telah dibersihkan dipisahkan menjadi:
 - X → seluruh fitur prediktor (independen)
 - y → kolom Outcome sebagai target (label diabetes: 0 = tidak, 1 = ya)
 
-3. Train-Test Split: Data dibagi menjadi data pelatihan dan pengujian menggunakan train_test_split() dengan parameter stratifikasi untuk menjaga distribusi kelas. 90% untuk pelatihan, 10% untuk pengujian. Tujuan dilakukannya untuk memastikan model dievaluasi pada data yang belum pernah dilihat (uji generalisasi model). Parameter random_state=123 digunakan untuk reproducibility (hasil tetap sama setiap kali dijalankan).
+5. Train-Test Split: Data dibagi menjadi data pelatihan dan pengujian menggunakan train_test_split() dengan parameter stratifikasi untuk menjaga distribusi kelas. 90% untuk pelatihan, 10% untuk pengujian. Tujuan dilakukannya untuk memastikan model dievaluasi pada data yang belum pernah dilihat (uji generalisasi model). Parameter random_state=123 digunakan untuk reproducibility (hasil tetap sama setiap kali dijalankan).
 
-4. Standardisasi: Digunakan StandardScaler() dari Scikit-learn dalam pipeline sebelum modeling. Ini penting karena model seperti K-Nearest Neighbors (KNN) dan Support Vector Machine (SVM) sensitif terhadap skala fitur. 
+6. Standardisasi: Digunakan StandardScaler() dari Scikit-learn dalam pipeline sebelum modeling. Ini penting karena model seperti K-Nearest Neighbors (KNN) dan Support Vector Machine (SVM) sensitif terhadap skala fitur. 
 - Digunakan StandardScaler() dari Scikit-learn untuk mengubah semua fitur numerik menjadi distribusi standar (mean = 0, std = 1).
 - scaler.fit() dilakukan hanya pada data latih. 
 - Transformasi kemudian diterapkan ke X_train dan X_test untuk mencegah data leakage.
@@ -137,7 +153,7 @@ Dataset yang telah dibersihkan dipisahkan menjadi:
 Deskripsi statistik fitur setelah distandarisasi ditampilkan untuk memastikan distribusi sudah seragam. Tujuannyaa untuk mengecek bahwa setiap fitur memiliki nilai tengah mendekati 0 dan standar deviasi mendekati 1.
 
 ## Modeling
-Membangun dan membandingkan beberapa model machine learning untuk memprediksi apakah seorang wanita suku Pima memiliki diabetes berdasarkan data kesehatan numerik.
+Pada tahap ini, dilakukan pengembangan beberapa model machine learning untuk memprediksi apakah seseorang mengidap diabetes berdasarkan fitur-fitur seperti kadar glukosa, tekanan darah, BMI, dan lain-lain. Model-model yang digunakan antara lain:
 - Algoritma yang Digunakan:
 1. Logistic Regression
 2. Random Forest (Default)
@@ -149,13 +165,26 @@ Semua model dibangun dengan menggunakan Scikit-learn, dan preprocessing dilakuka
 
 - Tahapan Modeling & Parameter:
 1. Logistic Regression
-Model regresi logistik digunakan sebagai baseline karena sifatnya yang sederhana, cepat, dan mudah diinterpretasikan. Model baseline yang sederhana dan interpretatif dan tidak dilakukan tuning.
-2. Random Forest (Default)
-Model ensemble berbasis pohon keputusan. Menghasilkan prediksi berdasarkan voting dari banyak pohon. dan digunakan Parameter default. digunakan parameter random_state=42.
-3. Support Vector Machine (SVM)
-- Model klasifikasi margin maksimal.
-- Diaktifkan probability=True agar dapat digunakan untuk ROC AUC.
+Model ini menggunakan fungsi logistik (sigmoid) untuk mengestimasi probabilitas bahwa suatu data termasuk dalam kelas 1. Logistic Regression bekerja dengan mengoptimalkan fungsi log-loss untuk memisahkan dua kelas.
+⚙️ Parameter:
+- penalty: 'l2' (default) → regularisasi Ridge
+- C: 1.0 (default) → kekuatan regularisasi
+- solver: 'lbfgs' (default)
+3. Random Forest (Default)
+   Random Forest adalah ensemble dari banyak pohon keputusan (Decision Tree). Setiap pohon dilatih pada subset acak dari data (bootstrap sampling), dan fitur yang digunakan juga dipilih secara acak. Hasil prediksi diambil berdasarkan mayoritas voting dari semua pohon. Model ensemble berbasis pohon keputusan. Menghasilkan prediksi berdasarkan voting dari banyak pohon. dan digunakan Parameter default. digunakan parameter random_state=42.
+⚙️ Parameter:
+- n_estimators: 100 (default) → jumlah pohon
+- criterion: 'gini' (default)
+- max_depth: None
+- random_state: 42
+4. Support Vector Machine (SVM)
+SVM mencoba mencari hyperplane terbaik yang memisahkan dua kelas dengan margin terbesar. Untuk data non-linear, SVM menggunakan kernel trick untuk memetakan data ke dimensi yang lebih tinggi.
+⚙️ Parameter:
+- kernel: 'rbf' (default)
+- C: 1.0 (default) → trade-off antara margin dan error
+- gamma: 'scale' (default)
 4. K-Nearest Neighbors (Tuned)
+  KNN adalah algoritma non-parametrik berbasis instance-based learning. KNN memprediksi kelas dari suatu sampel berdasarkan mayoritas label dari k tetangga terdekat (berdasarkan jarak—biasanya Euclidean). Model ini tidak melakukan proses training secara eksplisit, namun menyimpan data latih dan melakukan perhitungan saat prediksi.
 - Dibungkus dalam Pipeline dengan StandardScaler.
 - Tuning menggunakan GridSearchCV pada parameter:
     - n_neighbors: [3, 4, 5, 7, 9, 11]
@@ -172,7 +201,6 @@ Model ensemble berbasis pohon keputusan. Menghasilkan prediksi berdasarkan votin
     - bootstrap: [True, False]
     - criterion: ['gini', 'entropy']
 
-**Rubrik/Kriteria Tambahan (Opsional)**: 
 - Kekurangan dan kelebihan masing-masing algoritma yang digunakan:
 1. Logistic Regression
     - Kelebihan: Sederhana, interpretasi mudah
@@ -197,7 +225,7 @@ Dari seluruh algoritma yang digunakan model KNN Tuned dipilih sebagai model terb
 - ROC curve menunjukkan performa yang konsisten lebih baik dibanding model lain
 Model ini memberikan keseimbangan terbaik antara false positive dan false negative dalam konteks medis yang penting seperti diagnosis diabetes.
 
-Feature Importance
+- Feature Importance
 Dari hasil Permutation Feature Importance terhadap model KNN Tuned, fitur paling penting dalam prediksi adalah:
 - Glucose
 - BMI
@@ -206,16 +234,33 @@ Dari hasil Permutation Feature Importance terhadap model KNN Tuned, fitur paling
 - BMI-Glucose Ratio
 
 ## Evaluation
-**Rubrik/Kriteria Tambahan (Opsional) dan Kriteria Wajib**: 
-Metrik Evaluasi yang digunakan yaitu:
-1. Accuracy: (TP + TN) / Total
-Persentase jumlah prediksi yang benar dari total prediksi yang dilakukan, Semakin tinggi nilai akurasi, semakin banyak data yang diklasifikasikan dengan benar. Namun, akurasi bisa menyesatkan pada dataset yang tidak seimbang (misalnya jika sebagian besar pasien ternyata tidak mengidap diabetes).
-2. Precision: TP / (TP + FP)
-Proporsi prediksi positif yang benar, Seberapa akurat model saat menyatakan seseorang mengidap diabetes. Precision tinggi berarti sedikit false positive.
-3. Recall: TP / (TP + FN)
-Seberapa banyak kasus sebenarnya positif (penderita diabetes) yang berhasil terdeteksi oleh model, Recall tinggi menunjukkan sedikit false negative, yaitu pasien yang sebenarnya mengidap diabetes tetapi tidak terdeteksi.
-4. F1-score: Harmonic mean dari precision dan recall, F1-Score digunakan untuk menyeimbangkan antara precision dan recall, sangat berguna ketika kedua metrik tersebut sama pentingnya.
-5. ROC-AUC: Kemampuan model untuk membedakan antara kelas. Semakin mendekati 1, semakin baik model membedakan kelas, AUC sangat penting dalam proyek ini karena menilai kemampuan model untuk membedakan antara penderita dan non-penderita diabetes secara menyeluruh.
+Pada tahap evaluasi, kita menggunakan beberapa metrik klasifikasi untuk mengukur kinerja model dalam memprediksi diabetes pada wanita suku Pima. Metrik yang digunakan meliputi Accuracy, Precision, Recall, F1-Score, dan ROC-AUC. Setiap metrik ini memberikan pandangan yang berbeda tentang performa model, khususnya dalam konteks deteksi dini diabetes, yang sangat penting untuk diagnosis yang cepat dan efektif.
+1. Accuracy
+Metrik ini memberikan gambaran umum tentang performa model, tetapi bisa menyesatkan jika dataset tidak seimbang (misalnya, banyak kasus negatif). Pada kasus deteksi diabetes, meskipun model memiliki accuracy tinggi, bisa saja model tersebut lebih sering memprediksi "non-diabetes" dan gagal mendeteksi sebagian besar kasus diabetes.
+
+TP+TN / TP+TN+FP+FN
+
+- TP = True Positives (kasus positif yang benar terdeteksi)
+- TN = True Negatives (kasus negatif yang benar terdeteksi)
+- FP = False Positives (kasus negatif yang salah terdeteksi sebagai positif)
+- FN = False Negatives (kasus positif yang salah terdeteksi sebagai negatif)
+  
+2. Precision
+Precision mengukur akurasi dari prediksi positif. Dengan kata lain, seberapa banyak dari prediksi yang positif benar-benar benar. Precision tinggi berarti model jarang membuat prediksi positif yang salah (false positives). Dalam konteks prediksi diabetes, precision yang tinggi penting karena bisa meminimalkan jumlah pasien yang salah diberi diagnosis diabetes (false positives).
+
+ TP / (TP + FP)
+
+4. Recall
+Recall mengukur seberapa banyak kasus positif yang sebenarnya berhasil terdeteksi oleh model. Recall tinggi berarti model mampu mendeteksi sebagian besar kasus positif, yang dalam hal ini adalah pasien yang benar-benar mengidap diabetes. Recall yang tinggi sangat penting dalam konteks kesehatan karena dapat mengurangi jumlah pasien yang tidak terdeteksi (false negatives), yang dapat berisiko mengalami komplikasi serius jika tidak segera ditangani.
+
+TP / (TP + FN)
+
+6. F1-score
+   F1-Score adalah rata-rata harmonik antara precision dan recall, yang memberikan keseimbangan antara keduanya. F1-Score sangat berguna ketika kita ingin menyeimbangkan antara precision dan recall. F1-Score memberikan gambaran yang lebih seimbang tentang performa model, terutama ketika precision dan recall memiliki peran yang sama penting. Dalam kasus prediksi diabetes, F1-Score yang tinggi mengindikasikan model berhasil mendeteksi pasien diabetes dengan sedikit kesalahan baik dalam hal false positives maupun false negatives.
+   
+8. ROC-AUC
+  F1-Score memberikan gambaran yang lebih seimbang tentang performa model, terutama ketika precision dan recall memiliki peran yang sama penting. Dalam kasus prediksi diabetes, F1-Score yang tinggi mengindikasikan model berhasil mendeteksi pasien diabetes dengan sedikit kesalahan baik dalam hal false positives maupun false negatives.
+AUC tinggi menunjukkan bahwa model dapat memisahkan dengan baik antara penderita diabetes dan non-diabetes. Ini sangat penting dalam aplikasi medis, karena membantu mengidentifikasi individu berisiko yang membutuhkan perhatian medis lebih lanjut.
 
 Penjelasan Hasil Proyek Berdasarkan Metrik Evaluasi:
 ==== Logistic Regression ====
@@ -276,5 +321,40 @@ Confusion Matrix:
 - Random Forest (Tuned) memberikan keseimbangan yang cukup baik, tetapi tidak mampu mengungguli KNN dalam metrik utama.
 - Logistic Regression dan SVM memberikan hasil yang cukup seimbang, tetapi Recall-nya rendah — artinya banyak kasus diabetes yang tidak terdeteksi.
 - Recall pada semua model cenderung lebih rendah dari Precision, artinya model lebih cenderung melewatkan kasus positif daripada memprediksi positif yang salah.
- 
 
+Model yang dikembangkan bertujuan untuk membantu deteksi dini diabetes pada wanita suku Pima, dengan memanfaatkan data kesehatan dasar. Evaluasi model bertujuan untuk mengetahui apakah solusi ini mampu menjawab problem statement dan mencapai goals yang telah ditentukan.
+- Hasil Evaluasi:
+1. KNN (Tuned) menunjukkan performa terbaik dengan akurasi tertinggi (0.84) dan ROC AUC tertinggi (0.84), yang mengindikasikan kemampuan model dalam membedakan antara penderita dan non-penderita diabetes.
+2. Random Forest (Tuned) memberikan keseimbangan antara akurasi dan precision tetapi tidak mampu mengungguli KNN dalam hal performa keseluruhan.
+2. Logistic Regression dan SVM memiliki hasil yang cukup seimbang namun lebih rendah pada recall, yang berarti banyak kasus diabetes yang tidak terdeteksi.
+
+### Dampak Evaluasi terhadap Business Understanding
+1. Apakah model sudah menjawab setiap Problem Statement?
+- Problem Statement 1: Tingginya prevalensi diabetes pada wanita suku Pima dan keterbatasan dalam deteksi dini.
+Dampak: Model yang dibangun dapat membantu menjawab problem ini dengan memberikan alat bantu yang efektif untuk deteksi dini diabetes pada wanita suku Pima. Dengan menggunakan algoritma machine learning, kita dapat memprediksi potensi diabetes lebih cepat dan lebih murah daripada prosedur medis tradisional. Hasil evaluasi menunjukkan bahwa KNN (Tuned) memiliki akurasi tinggi (0.84), memberikan dasar yang kuat untuk deteksi dini.
+
+- Problem Statement 2: Kurangnya sistem prediksi atau alat bantu diagnostik berbasis data untuk membantu skrining awal.
+Dampak: Evaluasi model menunjukkan bahwa model seperti KNN dan Random Forest (Tuned) mampu memberikan solusi berbasis data untuk skrining awal. Model ini memberikan keseimbangan yang baik antara recall dan precision, yang berarti dapat meminimalkan risiko gagal mendeteksi pasien dengan diabetes serta mengurangi jumlah pasien yang salah didiagnosis.
+
+- Problem Statement 3: Keterbatasan sumber daya dan akses layanan medis.
+Dampak: Model machine learning yang cepat dan efisien dapat mengatasi keterbatasan ini dengan memberikan solusi otomatis yang dapat digunakan dalam skala besar, tanpa perlu prosedur medis mahal dan memakan waktu. Ini sangat relevan mengingat keterbatasan dalam akses ke layanan kesehatan, terutama di daerah terpencil.
+
+2. Apakah model berhasil mencapai setiap Goal yang diharapkan?
+- Goal 1: Membangun model prediktif yang mampu mendeteksi potensi diabetes secara dini.
+Dampak: Ya, model berhasil mencapai goal ini. Berdasarkan hasil evaluasi, model KNN (Tuned) berhasil mencapai akurasi tertinggi (0.84) dan ROC-AUC terbaik (0.84), yang menandakan bahwa model ini dapat diandalkan untuk deteksi dini diabetes.
+
+- Goal 2: Mengembangkan solusi machine learning berbasis dataset medis untuk mempermudah skrining awal pada kelompok wanita suku Pima.
+Dampak: Goal ini juga tercapai dengan baik. Model yang dikembangkan menyediakan solusi berbasis data yang mudah diakses dan diimplementasikan, memungkinkan skrining awal pada wanita suku Pima dengan cara yang lebih terukur dan efisien.
+
+- Goal 3: Menyediakan model otomatis dan terukur yang dapat membantu mengurangi ketergantungan pada pemeriksaan manual dan memfasilitasi penyaringan berskala besar.
+Dampak: Model yang telah dievaluasi dapat memfasilitasi penyaringan besar-besaran tanpa memerlukan pemeriksaan manual yang rumit, memungkinkan deteksi lebih luas pada populasi yang lebih besar, dan menyediakan sistem pendukung keputusan yang lebih cepat dan efisien.
+
+3. Apakah setiap Solution Statement yang direncanakan berdampak?
+- Solution Statement 1: Menggunakan Logistic Regression sebagai baseline model.
+Dampak: Logistic Regression sebagai baseline memberikan gambaran awal tentang kinerja model. Meskipun model ini memberikan hasil yang layak, namun model lainnya seperti KNN (Tuned) menunjukkan hasil yang lebih baik dalam hal akurasi dan keseimbangan antara precision dan recall.
+
+- Solution Statement 2: Membandingkan berbagai algoritma (Random Forest, SVM, KNN) untuk memilih yang terbaik.
+Dampak: Perbandingan ini sangat penting dalam memilih model yang terbaik. Berdasarkan evaluasi, KNN (Tuned) memberikan performa terbaik di antara model yang diuji, yang memberikan dampak positif dalam meningkatkan deteksi dini diabetes.
+
+- Solution Statement 3: Melakukan Hyperparameter Tuning untuk meningkatkan akurasi.
+Dampak: Hyperparameter tuning pada KNN dan Random Forest terbukti efektif dalam meningkatkan performa model, terutama dalam hal akurasi dan keseimbangan antara false positive dan false negative.
