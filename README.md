@@ -272,59 +272,43 @@ AUC tinggi menunjukkan bahwa model dapat memisahkan dengan baik antara penderita
 
 Penjelasan Hasil Proyek Berdasarkan Metrik Evaluasi:
 
-==== Logistic Regression ====
-Accuracy : 0.7903225806451613
-Precision: 0.7142857142857143
-Recall   : 0.5263157894736842
-F1-Score : 0.6060606060606061
-ROC AUC: 0.83
-Confusion Matrix:
- [[39  4]
- [ 9 10]]
+### 🔹 **1. Logistic Regression**
+- **Accuracy**  : 0.7903  
+- **Precision** : 0.7143  
+- **Recall**    : 0.5263  
+- **F1-Score**  : 0.6061  
+- **ROC AUC**   : 0.83  
 
 
-==== Random Forest ====
-Accuracy : 0.7580645161290323
-Precision: 0.6
-Recall   : 0.631578947368421
-F1-Score : 0.6153846153846154
-ROC AUC: 0.80
-Confusion Matrix:
- [[35  8]
- [ 7 12]]
+### 🔹 **2. Random Forest**
+- **Accuracy**  : 0.7581  
+- **Precision** : 0.6000  
+- **Recall**    : 0.6316  
+- **F1-Score**  : 0.6154  
+- **ROC AUC**   : 0.80  
+
+### 🔹 **3. Support Vector Machine (SVM)**
+- **Accuracy**  : 0.7903  
+- **Precision** : 0.7143  
+- **Recall**    : 0.5263  
+- **F1-Score**  : 0.6061  
+- **ROC AUC**   : 0.80  
 
 
-==== SVM ====
-Accuracy : 0.7903225806451613
-Precision: 0.7142857142857143
-Recall   : 0.5263157894736842
-F1-Score : 0.6060606060606061
-ROC AUC: 0.80
-Confusion Matrix:
- [[39  4]
- [ 9 10]]
+### 🔹 **4. K-Nearest Neighbors (Tuned)**
+- **Accuracy**  : 0.8387  
+- **Precision** : 0.8462  
+- **Recall**    : 0.5789  
+- **F1-Score**  : 0.6875  
+- **ROC AUC**   : 0.84  
 
 
-==== KNN (Tuned) ====
-Accuracy : 0.8387096774193549
-Precision: 0.8461538461538461
-Recall   : 0.5789473684210527
-F1-Score : 0.6875
-ROC AUC: 0.84
-Confusion Matrix:
- [[41  2]
- [ 8 11]]
-
-
-==== Random Forest (Tuned) ====
-Accuracy : 0.7580645161290323
-Precision: 0.6111111111111112
-Recall   : 0.5789473684210527
-F1-Score : 0.5945945945945946
-ROC AUC: 0.81
-Confusion Matrix:
- [[36  7]
- [ 8 11]]
+### 🔹 **5. Random Forest (Tuned)**
+- **Accuracy**  : 0.7581  
+- **Precision** : 0.6111  
+- **Recall**    : 0.5789  
+- **F1-Score**  : 0.5946  
+- **ROC AUC**   : 0.81  
 
  
  Analisis dan Interpretasi:
