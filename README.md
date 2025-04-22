@@ -56,11 +56,11 @@ Dari informasi dataset diatas, didapatkan sejumlah informasi dari dataset pima d
 - Age: Usia (dalam tahun)
 - Outcome: Target variable (0 = non-diabetes, 1 = diabetes)
 
-![jenis](https://github.com/fidelsyaa/ML/blob/main/jenis.png)
+![Cuplikan layar 2025-04-20 133727](https://github.com/user-attachments/assets/49ebb04d-7033-499a-929f-a0cc0c7e223a)
 
 Dari eksplorasi data yang dilakukan menggunakan fungsi Melalui fungsi diabetes.info() diperoleh bahwa semua fitur bertipe numerik (int64 dan float64). Tidak ada nilai null secara eksplisit. Distribusi statistik dari dataset juga menujukkan bahwa fitur seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI memiliki nilai minimum 0, yang secara medis tidak logis (misalnya tekanan darah 0), dan akan ditindaklanjuti di tahap Data Preparation.
 
-![describe](https://github.com/fidelsyaa/ML/blob/main/describe.png)
+![Cuplikan layar 2025-04-20 133715](https://github.com/user-attachments/assets/04cb0778-c48a-4fe4-b009-cb6645f8b8af)
 
 Berdasarkan gambar statistik deskriptif dari dataset Pima Indians Diabetes Database tersebut, terlihat bahwa setiap fitur memiliki jumlah data yang sama yaitu sebanyak 768 entri. Namun, beberapa fitur memiliki nilai minimum yang tidak logis secara medis dan perlu diperhatikan dalam tahap data cleaning.
 
@@ -105,8 +105,9 @@ distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang 
 1. Handling Missing Values
 2. Handling Outliers
 3. Feature Engineering
-4. Train-Test-Split
-5. Standarisasi
+4. Pemisahan Fitur dan Target
+5. Train-Test-Split
+6. Standarisasi
 
 1. Handling Missing Values
    
