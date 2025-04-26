@@ -38,8 +38,6 @@ Model-model ini dievaluasi menggunakan metrik klasifikasi seperti akurasi, preci
 
 Dataset ini berasal dari National Institute of Diabetes and Digestive and Kidney Diseases. Tujuan utama dari dataset ini adalah untuk memprediksi secara diagnostik apakah seorang pasien memiliki diabetes atau tidak, berdasarkan beberapa pengukuran diagnostik yang terdapat dalam dataset tersebut. Ada beberapa batasan yang diterapkan dalam pemilihan data dari database yang lebih besar. Secara khusus, semua pasien yang ada dalam dataset ini adalah perempuan dengan usia minimal 21 tahun dan memiliki keturunan Pima Indian. Dataset yang digunakan adalah Pima Indians Diabetes Database, tersedia di [UCI Machine Learning Repository](https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database/data)
 
-![variabel](https://github.com/fidelsyaa/ML/blob/main/variabel.png)
-
 Dari informasi dataset diatas, didapatkan sejumlah informasi dari dataset pima diabetes, yaitu:
 - Jumlah baris: 768
 - Jumlah kolom: 9 (8 fitur + 1 label Outcome)
@@ -56,11 +54,7 @@ Dari informasi dataset diatas, didapatkan sejumlah informasi dari dataset pima d
 - Age: Usia (dalam tahun)
 - Outcome: Target variable (0 = non-diabetes, 1 = diabetes)
 
-![Cuplikan layar 2025-04-20 133727](https://github.com/user-attachments/assets/49ebb04d-7033-499a-929f-a0cc0c7e223a)
-
 Dari eksplorasi data yang dilakukan menggunakan fungsi Melalui fungsi diabetes.info() diperoleh bahwa semua fitur bertipe numerik (int64 dan float64). Tidak ada nilai null secara eksplisit. Distribusi statistik dari dataset juga menujukkan bahwa fitur seperti Glucose, BloodPressure, SkinThickness, Insulin, dan BMI memiliki nilai minimum 0, yang secara medis tidak logis (misalnya tekanan darah 0), dan akan ditindaklanjuti di tahap Data Preparation.
-
-![Cuplikan layar 2025-04-20 133715](https://github.com/user-attachments/assets/04cb0778-c48a-4fe4-b009-cb6645f8b8af)
 
 Berdasarkan gambar statistik deskriptif dari dataset Pima Indians Diabetes Database tersebut, terlihat bahwa setiap fitur memiliki jumlah data yang sama yaitu sebanyak 768 entri. Namun, beberapa fitur memiliki nilai minimum yang tidak logis secara medis dan perlu diperhatikan dalam tahap data cleaning.
 
@@ -72,34 +66,22 @@ Sementara itu, fitur DiabetesPedigreeFunction, Age, dan Outcome tidak memiliki n
 
 Secara keseluruhan, terlihat bahwa banyak fitur yang mengandung nilai nol yang secara medis tidak masuk akal, sehingga perlu dilakukan proses penanganan missing values (seperti imputasi dengan median) sebelum masuk ke tahap pelatihan model.
 
-Dilakukan juga korelsi antar fitur pada dataset menggunakan heatmap:
-
-![heatmap](https://github.com/fidelsyaa/ML/blob/main/heatmap.png)
-
-Berdasarkan heatmap korelasi di atas, terlihat bahwa variabel Outcome (indikator apakah seseorang mengidap diabetes atau tidak) memiliki korelasi positif paling kuat dengan Glucose sebesar 0.47. Ini menunjukkan bahwa semakin tinggi kadar glukosa seseorang, semakin besar kemungkinan orang tersebut terdeteksi diabetes. Hal ini sesuai dengan pemahaman medis bahwa kadar gula darah tinggi merupakan indikator utama diabetes.
+Dilakukan juga korelsi antar fitur pada dataset menggunakan heatmap, Berdasarkan heatmap korelasi, terlihat bahwa variabel Outcome (indikator apakah seseorang mengidap diabetes atau tidak) memiliki korelasi positif paling kuat dengan Glucose sebesar 0.47. Ini menunjukkan bahwa semakin tinggi kadar glukosa seseorang, semakin besar kemungkinan orang tersebut terdeteksi diabetes. Hal ini sesuai dengan pemahaman medis bahwa kadar gula darah tinggi merupakan indikator utama diabetes.
 
 Selain Glucose, fitur BMI juga menunjukkan korelasi sedang dengan Outcome sebesar 0.29, diikuti oleh Age (0.24) dan Pregnancies (0.22). Artinya, indeks massa tubuh, usia, dan jumlah kehamilan (pada perempuan) juga turut berkontribusi dalam risiko diabetes, meskipun tidak sekuat glukosa.
 
 Sementara itu, fitur-fitur seperti BloodPressure, SkinThickness, Insulin, dan DiabetesPedigreeFunction memiliki korelasi yang lebih lemah terhadap Outcome, dengan nilai di bawah 0.2. Korelasi negatif maupun sangat kecil seperti ini menunjukkan bahwa keterkaitannya terhadap kemungkinan diabetes lebih rendah, meskipun bisa saja masih memiliki peran ketika digabungkan dengan fitur lainnya.
 
-Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup kuat dengan SkinThickness (0.44) dan Glucose (0.33), serta BMI (0.20). Korelasi ini dapat dijelaskan karena parameter-parameter tersebut sering kali saling berkaitan dalam kondisi metabolik tubuh.
-
-![distribusi](https://github.com/fidelsyaa/ML/blob/main/distribusi.png)
-
-distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang tidak menderita diabetes dibandingkan dengan yang menderita, sehingga perlu penanganan khusus dalam proses pemodelan agar model tidak bias.
+Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup kuat dengan SkinThickness (0.44) dan Glucose (0.33), serta BMI (0.20). Korelasi ini dapat dijelaskan karena parameter-parameter tersebut sering kali saling berkaitan dalam kondisi metabolik tubuh. distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang tidak menderita diabetes dibandingkan dengan yang menderita, sehingga perlu penanganan khusus dalam proses pemodelan agar model tidak bias.
 
 - Univariate Analysis
 1. Distribusi kelas target (Outcome) diperiksa dengan menggunakan sns.countplot().
 2. Visualisasi distribusi setiap fitur dilakukan dengan histogram dan boxplot untuk melihat potensi outlier dan distribusi yang skewed.
 
-![univariate](https://github.com/fidelsyaa/ML/blob/main/univariate.png)
-
 - Multivariate Analysis
 1. Korelasi antar fitur dan dengan target Outcome dihitung menggunakan matriks korelasi.
 2. Visualisasi hubungan antar fitur dilakukan menggunakan pairplot dan heatmap.
 3. Hasil menunjukkan bahwa Glucose memiliki korelasi paling signifikan dengan Outcome.
-
-![multi](https://github.com/fidelsyaa/ML/blob/main/multi.png)
 
 ## Data Preparation
 1. Handling Missing Values
@@ -110,8 +92,6 @@ distribusi kelas menunjukkan bahwa dataset ini memiliki lebih banyak orang yang 
 6. Standarisasi
 
 1. Handling Missing Values
-   
-     ![isnull](https://github.com/fidelsyaa/ML/blob/main/isnull.png)
    
    Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
 
