@@ -91,6 +91,7 @@ Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup k
 5. Train-Test-Split
 6. Standarisasi
 
+
 1. Handling Missing Values
 Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
 
