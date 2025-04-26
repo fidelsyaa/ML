@@ -95,20 +95,19 @@ Berikut adalah penjabaran yang dilakukan untuk data preparation:
 1. Handling Missing Values
 Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
 
-Sebelum dilakukan imputasi dengan mengisi nilai nol menggunakan media, berikut adalah fitur yang memiliki angka 0:
-Jumlah nilai nol sebelum imputasi:
-Glucose: 5 nilai nol
-BloodPressure: 35 nilai nol
-SkinThickness: 227 nilai nol
-Insulin: 374 nilai nol
-BMI: 11 nilai nol
+     Sebelum dilakukan imputasi dengan mengisi nilai nol menggunakan media, berikut adalah fitur yang memiliki angka 0:
+     Jumlah nilai nol sebelum imputasi:
+     Glucose: 5 nilai nol
+     BloodPressure: 35 nilai nol
+     SkinThickness: 227 nilai nol
+     Insulin: 374 nilai nol
+     BMI: 11 nilai nol
 
     
 2. Handling Outliers
 Mengidentifikasi dan menangani outliers menggunakan visualisasi boxplot. Jika diperlukan, outliers dapat dihapus atau distandarisasi. Outlier dideteksi menggunakan boxplot dan ditangani dengan metode IQR (Inter Quartile Range). Setiap nilai yang berada di luar [Q1 - 1.5IQR, Q3 + 1.5IQR] dianggap sebagai outlier dan ditangani sesuai strategi yang dipilih (misalnya diganti atau dihapus). Outlier perlu ditangani dalam proses analisis data dan pemodelan karena mereka dapat mempengaruhi hasil analisis dan akurasi model prediksi secara signifikan
 Jumlah data sebelum outlier removal: (768, 9)
 Jumlah data setelah outlier removal: (615, 9)
-
 Setelah outliers ditangani data yang awalnya ada 768, menjadi 615.
 
 
