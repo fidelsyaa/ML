@@ -91,7 +91,7 @@ Dari sisi hubungan antar fitur, terlihat bahwa Insulin memiliki korelasi cukup k
 5. Train-Test-Split
 6. Standarisasi
 
-
+Berikut adalah penjabaran yang dilakukan untuk data preparation:
 1. Handling Missing Values
 Meski secara eksplisit tidak ada nilai NaN, beberapa kolom memiliki nilai nol yang secara medis tidak mungkin, misalnya: Glucose = 0, BloodPressure = 0, dst. Nilai-nilai nol ini dianggap tidak valid dan digantikan dengan nilai median dari masing-masing kolom. Nilai-nilai ini diganti menggunakan median karena distribusi fitur bersifat skewed dan median lebih robust terhadap outlier.
 
@@ -102,6 +102,7 @@ BloodPressure: 35 nilai nol
 SkinThickness: 227 nilai nol
 Insulin: 374 nilai nol
 BMI: 11 nilai nol
+
     
 2. Handling Outliers
 Mengidentifikasi dan menangani outliers menggunakan visualisasi boxplot. Jika diperlukan, outliers dapat dihapus atau distandarisasi. Outlier dideteksi menggunakan boxplot dan ditangani dengan metode IQR (Inter Quartile Range). Setiap nilai yang berada di luar [Q1 - 1.5IQR, Q3 + 1.5IQR] dianggap sebagai outlier dan ditangani sesuai strategi yang dipilih (misalnya diganti atau dihapus). Outlier perlu ditangani dalam proses analisis data dan pemodelan karena mereka dapat mempengaruhi hasil analisis dan akurasi model prediksi secara signifikan
@@ -109,6 +110,7 @@ Jumlah data sebelum outlier removal: (768, 9)
 Jumlah data setelah outlier removal: (615, 9)
 
 Setelah outliers ditangani data yang awalnya ada 768, menjadi 615.
+
 
 3. Feature Engineering:
 - BMI_Glucose_Ratio: Rasio antara BMI (Indeks Massa Tubuh) dan Glucose (Kadar glukosa darah).
@@ -119,12 +121,15 @@ Manfaat: Memberikan fitur turunan yang bisa mengungkap hubungan non-linier antar
 Tujuan: Membantu model menangkap pola risiko berdasarkan kelompok usia. Fitur kategorikal ini dapat memperjelas tren yang tersembunyi jika hanya mengandalkan nilai numerik Age.
 Manfaat: Mempermudah interpretasi dan bisa meningkatkan kinerja model yang sensitif terhadap variabel kategori.
 
+
 4. Pemisahan Fitur dan Target
 Dataset yang telah dibersihkan dipisahkan menjadi:
 - X → seluruh fitur prediktor (independen)
 - y → kolom Outcome sebagai target (label diabetes: 0 = tidak, 1 = ya)
 
+
 5. Train-Test Split: Data dibagi menjadi data pelatihan dan pengujian menggunakan train_test_split() dengan parameter stratifikasi untuk menjaga distribusi kelas. 90% untuk pelatihan, 10% untuk pengujian. Tujuan dilakukannya untuk memastikan model dievaluasi pada data yang belum pernah dilihat (uji generalisasi model). Parameter random_state=123 digunakan untuk reproducibility (hasil tetap sama setiap kali dijalankan).
+
 
 6. Standardisasi: Digunakan StandardScaler() dari Scikit-learn dalam pipeline sebelum modeling. Ini penting karena model seperti K-Nearest Neighbors (KNN) dan Support Vector Machine (SVM) sensitif terhadap skala fitur. 
 - Digunakan StandardScaler() dari Scikit-learn untuk mengubah semua fitur numerik menjadi distribusi standar (mean = 0, std = 1).
